@@ -5,12 +5,13 @@ import (
 	"log"
 	"time"
 
+	"mongodo/utils"
+	"os"
+
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"mongodo/utils"
-	"os"
 )
 
 var client *mongo.Client
@@ -68,9 +69,15 @@ func ListTasks() {
 
 }
 
-func DeleteTask() {
-
+func DeleteTask(name string) {
+	coll := client.Database("mongodo").Collection("tasks")
+    _, err := coll.DeleteOne(context.TODO(),bson.D{{"name", name}})
+    if err != nil {
+        panic(err)
+    }
+    log.Printf("%s deleted", name)
 }
+
 
 func FindTask(name string) bool {
 	coll := client.Database("mongodo").Collection("tasks")

@@ -16,7 +16,7 @@ var listCmd = &cobra.Command{
 	Short: "List all tasks",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("list called")
-        db.ListTasks()
+		db.ListTasks()
 	},
 }
 

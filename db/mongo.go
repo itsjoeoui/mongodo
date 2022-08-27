@@ -71,13 +71,12 @@ func ListTasks() {
 
 func DeleteTask(name string) {
 	coll := client.Database("mongodo").Collection("tasks")
-    _, err := coll.DeleteOne(context.TODO(),bson.D{{"name", name}})
-    if err != nil {
-        panic(err)
-    }
-    log.Printf("%s deleted", name)
+	_, err := coll.DeleteOne(context.TODO(), bson.D{{"name", name}})
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("%s deleted", name)
 }
-
 
 func FindTask(name string) bool {
 	coll := client.Database("mongodo").Collection("tasks")

@@ -1,6 +1,5 @@
 /*
 Copyright © 2022 Joey Yu <joey@itsjoeoui.com>
-
 */
 package cmd
 
@@ -10,13 +9,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "mongodo",
 	Short: "Mongodo Todo List",
-	Long: "A todo list CLI tool built with Golang and MongoDB", 
+	Long:  "A todo list CLI tool built with Golang and MongoDB",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -39,5 +36,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-

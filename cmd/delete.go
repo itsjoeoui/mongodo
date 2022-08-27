@@ -18,7 +18,6 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("delete called")
 		db.DeleteTask(strings.Join(args, ""))
-
 	},
 }
 

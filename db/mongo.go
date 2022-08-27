@@ -2,8 +2,6 @@ package db
 
 import (
 	"context"
-	"encoding/json"
-	//	"encoding/json"
 	"log"
 	"time"
 
@@ -11,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"mongodo/utils"
 	"os"
 )
 
@@ -46,6 +45,9 @@ func Setup() {
 }
 
 func AddTask(name string) {
+	if FindTask(name) {
+		log.Fatalf("%s already exists", name)
+	}
 	coll := client.Database("mongodo").Collection("tasks")
 	doc := bson.D{{"name", name}}
 	_, err := coll.InsertOne(context.TODO(), doc)
@@ -55,6 +57,14 @@ func AddTask(name string) {
 }
 
 func ListTasks() {
+	coll := client.Database("mongodo").Collection("tasks")
+	result, err := coll.Distinct(context.TODO(), "name", bson.D{})
+
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Print(result)
 
 }
 
@@ -62,21 +72,19 @@ func DeleteTask() {
 
 }
 
-func FindTask(name string) {
+func FindTask(name string) bool {
 	coll := client.Database("mongodo").Collection("tasks")
 
 	var result bson.M
 	err := coll.FindOne(context.TODO(), bson.D{{"name", name}}).Decode(&result)
 	if err == mongo.ErrNoDocuments {
 		log.Printf("No task found with name %s", name)
+		return false
 	}
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	jsonData, err := json.MarshalIndent(result, "", "    ")
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("%s\n", jsonData)
+	utils.Print(result)
+	return true
 }
